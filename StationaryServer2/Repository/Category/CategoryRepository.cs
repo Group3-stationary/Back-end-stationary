@@ -13,27 +13,46 @@ namespace StationaryServer2.Repository
             this.db = db;
         }
 
-        public Task<Category> Create(Category category)
+
+        public async Task<Category> CreateCategory(Category category)
         {
-            throw new System.NotImplementedException();
+            db.Categories.Add(category);
+            await db.SaveChangesAsync();
+            return category;
+
         }
 
-        public Task Delete(int id)
+        public async Task DeleteCategory(int id)
         {
-            throw new System.NotImplementedException();
+            var data = await db.Categories.FindAsync(id);
+            if (data != null)
+            {
+                db.Categories.Remove(data);
+                await db.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Category>> GetCategories()
         {
-            return await db.Categories.ToListAsync();
+            var data = await db.Categories.ToListAsync();
+            if (data != null)
+            {
+                return data;
+            }
+            return null;
         }
 
         public async Task<Category> GetCategory(int id)
         {
-            return await db.Categories.FindAsync(id);
+            var data = await db.Categories.SingleOrDefaultAsync(e=>e.CategotyId.Equals(id));
+            if (data != null)
+            {
+                return data;
+            }
+            return null;
         }
 
-        public async Task Update(Category category)
+        public async Task UpdateCategory(Category category)
         {
             db.Entry(category).State = EntityState.Modified;
             await db.SaveChangesAsync();

@@ -1,4 +1,5 @@
-﻿using StationaryServer2.Models.Stationary;
+﻿using Microsoft.EntityFrameworkCore;
+using StationaryServer2.Models.Stationary;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,29 +7,52 @@ namespace StationaryServer2.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public Task<Employee> Create(Employee employee)
+        private readonly StationeryContext db;
+        public EmployeeRepository(StationeryContext db)
         {
-            throw new System.NotImplementedException();
+            this.db = db;
+        }
+        public async Task<Employee> Create(Employee employee)
+        {
+            db.Employees.Add(employee);
+            await db.SaveChangesAsync();
+            return employee;
         }
 
-        public Task Delete(string id)
+        public async Task Delete(string id)
         {
-            throw new System.NotImplementedException();
+            var data = await db.Employees.FindAsync(id);
+            if (data != null)
+            {
+                db.Employees.Remove(data);
+                await db.SaveChangesAsync();
+            }
         }
 
-        public Task<IEnumerable<Employee>> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            throw new System.NotImplementedException();
+            var data = await db.Employees.ToListAsync();
+            if (data != null)
+            {
+                return data;
+            }
+            return null;
         }
 
-        public Task<Employee> Get(string id)
+        public async Task<Employee> GetEmployee(string id)
         {
-            throw new System.NotImplementedException();
+            var data = await db.Employees.FindAsync(id);
+            if (data != null)
+            {
+                return data;
+            }
+            return null;
         }
 
-        public Task Update(Employee employee)
+        public async Task Update(Employee employee)
         {
-            throw new System.NotImplementedException();
+            db.Entry(employee).State = EntityState.Modified;
+            await db.SaveChangesAsync();
         }
     }
 }
