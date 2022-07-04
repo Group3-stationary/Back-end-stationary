@@ -29,22 +29,22 @@ namespace StationaryServer2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<StationeryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StationeryCon")));
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StationaryServer2", Version = "v1" });
             });
-            //services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
-            services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
-            //            services.AddScoped(typeof(IEmployeeRepository), typeof(EmployeeRepository));
-            //            services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
-            //            services.AddScoped(typeof(IPermissionRepository), typeof(PermissionRepository));
-            //            services.AddScoped(typeof(IRoleRepository), typeof(RoleRepository));
+            services.AddScoped(typeof(IStationeryRepository<>), typeof(StationeryRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options =>
+              options.WithOrigins("http://localhost:3000")
+             .AllowAnyHeader()
+             .AllowAnyMethod());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
