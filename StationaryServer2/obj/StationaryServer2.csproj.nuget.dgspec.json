@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj": {}
+    "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj": {}
   },
   "projects": {
-    "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj": {
+    "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
+        "projectUniqueName": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
         "projectName": "StationaryServer2",
-        "projectPath": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
+        "projectPath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "D:\\Back_end\\StationaryServer2\\obj\\",
+        "outputPath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -43,9 +43,21 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Ardalis.Specification": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
             "AutoMapper": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "FluentAssertions": {
+              "target": "Package",
+              "version": "[6.7.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[5.0.17, )"
             },
             "Microsoft.AspNetCore.Cors": {
               "target": "Package",
@@ -68,6 +80,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "Swashbuckle.AspNetCore.Annotations": {
+              "target": "Package",
+              "version": "[6.3.1, )"
             }
           },
           "imports": [

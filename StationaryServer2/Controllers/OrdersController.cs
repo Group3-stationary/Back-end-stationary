@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StationaryServer2.Models.Stationary;
 using StationaryServer2.Repository;
@@ -11,6 +12,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private IStationeryRepository<Order> db_Order;
@@ -39,11 +41,13 @@ namespace StationaryServer2.Controllers
             return CreatedAtAction(nameof(GetCategories), new { id = Order.OrderId }, Order);
         }
         [HttpPut("UpdateOrder")]
-        public async Task<ActionResult> UpdateOrder([FromBody] Order Order)
+        public async Task<ActionResult<Order>> UpdateOrder([FromBody] Order Order)
         {
             var data = await db_Order.GetById(Order.OrderId);
             if (data != null)
             {
+                data.Status = Order.Status;
+                data.UpdatedAt = Order.UpdatedAt;
                 await db_Order.Update(data);
                 return Ok();
             }
