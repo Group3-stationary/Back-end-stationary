@@ -1,3 +1,5 @@
+using FluentAssertions.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -5,19 +7,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StationaryServer2.Interface;
+using StationaryServer2.Models;
 using StationaryServer2.Models.Stationary;
 using StationaryServer2.Repository;
+using StationaryServer2.service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace StationaryServer2
 {
     public class Startup
     {
+        readonly string AllowSpecificOrigins = "AllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,24 +34,101 @@ namespace StationaryServer2
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<StationeryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StationeryCon")));
+        {          
             services.AddCors();
             services.AddControllers();
+
+            #region Work with Database
+            services.AddDbContext<StationeryContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StationeryCon")));
+            #endregion
+
+            #region Register Service
+            services.AddScoped(typeof(IStationeryRepository<>), typeof(StationeryRepository<>));
+            services.AddScoped<IJwtService, JwtService>();
+            #endregion
+
+            #region Allow CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:3000")
+            .AllowCredentials();
+                                  });
+            });
+            #endregion
+
+            #region Add Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StationaryServer2", Version = "v1" });
+                c.EnableAnnotations();
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                                                                           {
+                                                                             new OpenApiSecurityScheme
+                                                                             {
+                                                                               Reference = new OpenApiReference
+                                                                               {
+                                                                                 Type = ReferenceType.SecurityScheme,
+                                                                                 Id = "Bearer"
+                                                                               }
+                                                                              },
+                                                                              new string[] { }
+                                                                            }
+                                                                          });
+
             });
-            services.AddScoped(typeof(IStationeryRepository<>), typeof(StationeryRepository<>));
+
+            #endregion
+
+            #region JWT Authentication
+            services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));//ket noi,
+            var key = Encoding.ASCII.GetBytes(Configuration["JwtConfig:Secret"]);//ma hoa va sinh ra JWT, ma hoa ve byte
+
+            var tokenValidationParams = new TokenValidationParameters
+            {
+                //tu cap token
+                ValidateIssuer = false,
+                ValidateAudience = false,//sai dich vu o ngoai thi true va chi duong dan cua dich vu
+
+                //ky len token cua minh
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),     
+                
+                //thoi gian hieu luc
+                ValidateLifetime = true,
+                RequireExpirationTime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+            services.AddSingleton(tokenValidationParams);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//them thu vien
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;//them thu vien
+
+            })
+            .AddJwtBearer(jwt =>
+            {
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = tokenValidationParams;
+            });
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options =>
-              options.WithOrigins("http://localhost:3000")
-             .AllowAnyHeader()
-             .AllowAnyMethod());
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,8 +136,11 @@ namespace StationaryServer2
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StationaryServer2 v1"));
             }
 
-            app.UseRouting();
+            app.UseHttpsRedirection();
 
+            app.UseRouting();
+            //khai bao tren them vao ow duoi
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

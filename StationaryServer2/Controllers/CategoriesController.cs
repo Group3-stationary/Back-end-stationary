@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StationaryServer2.Models.Stationary;
 using StationaryServer2.Repository;
@@ -9,6 +10,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CategoriesController : ControllerBase
     {
         private IStationeryRepository<Category> db_category;
@@ -37,11 +39,16 @@ namespace StationaryServer2.Controllers
             return CreatedAtAction(nameof(GetCategories), new { id = category.CategotyId }, category);
         }
         [HttpPut("UpdateCategory")]
-        public async Task<ActionResult> UpdateCategory([FromBody] Category category)
+        public async Task<ActionResult<Category>> UpdateCategory([FromBody] Category category)
         {
             var data = await db_category.GetById(category.CategotyId);
             if (data!= null)
             {
+                data.CategotyName = category.CategotyName;
+                data.CreatedAt = category.CreatedAt;
+                data.IdParent = category.IdParent;
+                data.UpdatedAt = category.UpdatedAt;
+                data.DeletedAt = category.DeletedAt;
                 await db_category.Update(data);
                 return Ok();
             }
@@ -49,7 +56,7 @@ namespace StationaryServer2.Controllers
             
         }
         [HttpDelete("CategoryId")]
-        public async Task<ActionResult> DeleteCategory(int id)
+        public async Task<ActionResult<Category>> DeleteCategory(int id)
         {
             var data = await db_category.GetById(id);
             if (data == null)

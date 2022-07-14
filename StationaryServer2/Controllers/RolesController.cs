@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StationaryServer2.Models.Stationary;
 using StationaryServer2.Repository;
@@ -11,6 +12,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RolesController : ControllerBase
     {
         private IStationeryRepository<Role> db_Role;
@@ -39,11 +41,14 @@ namespace StationaryServer2.Controllers
             return CreatedAtAction(nameof(GetCategories), new { id = Role.RoleId }, Role);
         }
         [HttpPut("UpdateRole")]
-        public async Task<ActionResult> UpdateRole([FromBody] Role Role)
+        public async Task<ActionResult<Role>> UpdateRole([FromBody] Role Role)
         {
             var data = await db_Role.GetById(Role.RoleId);
             if (data != null)
             {
+                data.RoleName = Role.RoleName;
+                data.DisplayName = Role.DisplayName;
+                data.UpdatedAt = Role.UpdatedAt;
                 await db_Role.Update(data);
                 return Ok();
             }

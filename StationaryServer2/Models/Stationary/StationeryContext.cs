@@ -26,14 +26,14 @@ namespace StationaryServer2.Models.Stationary
         public virtual DbSet<Permission> Permissions { get; set; }
         public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=Stationery; user id=sa; password=1");
+                optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=Stationery; user id=sa; password=1;");
             }
         }
 
@@ -44,7 +44,7 @@ namespace StationaryServer2.Models.Stationary
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategotyId)
-                    .HasName("PK__Category__2A863D5DCBEFEC72");
+                    .HasName("PK__Category__2A863D5D6DFA43F7");
 
                 entity.ToTable("Category");
 
@@ -128,7 +128,7 @@ namespace StationaryServer2.Models.Stationary
             modelBuilder.Entity<EmployeeRole>(entity =>
             {
                 entity.HasKey(e => e.EmployeeRolesId)
-                    .HasName("PK__Employee__B7B61793B67786AA");
+                    .HasName("PK__Employee__B7B617939685EE70");
 
                 entity.ToTable("Employee_role");
 
@@ -145,7 +145,7 @@ namespace StationaryServer2.Models.Stationary
             modelBuilder.Entity<Information>(entity =>
             {
                 entity.HasKey(e => e.Title)
-                    .HasName("PK__Informat__2CB664DDB5CA1A7F");
+                    .HasName("PK__Informat__2CB664DDDEF81293");
 
                 entity.Property(e => e.Title)
                     .HasMaxLength(255)
@@ -196,24 +196,12 @@ namespace StationaryServer2.Models.Stationary
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("Updated_at");
-
-                entity.HasOne(d => d.Order)
-                    .WithMany(p => p.OrderItems)
-                    .HasForeignKey(d => d.OrderId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Orders_Order_items_Order_id");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.OrderItems)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Products_Order_items_Product_id");
             });
 
             modelBuilder.Entity<Permission>(entity =>
             {
                 entity.HasKey(e => e.PermissionsId)
-                    .HasName("PK__Permissi__1EDAF9A86C5A4A00");
+                    .HasName("PK__Permissi__1EDAF9A85BABCFD4");
 
                 entity.ToTable("Permission");
 
@@ -298,6 +286,18 @@ namespace StationaryServer2.Models.Stationary
                     .HasColumnName("updated_at");
             });
 
+            modelBuilder.Entity<RefreshToken>(entity =>
+            {
+                entity.Property(e => e.EmployeeId)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.RefreshTokens)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_RefreshTokens_RefreshTokens");
+            });
+
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("Role");
@@ -328,3 +328,4 @@ namespace StationaryServer2.Models.Stationary
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
+

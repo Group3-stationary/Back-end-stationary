@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StationaryServer2.Models.Stationary;
 using StationaryServer2.Repository;
@@ -11,6 +12,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PermissonRolesController : ControllerBase
     {
         private IStationeryRepository<PermissionRole> db_PermissionRole;
@@ -39,11 +41,14 @@ namespace StationaryServer2.Controllers
             return CreatedAtAction(nameof(GetCategories), new { id = PermissionRole.PermissionRoleId }, PermissionRole);
         }
         [HttpPut("UpdatePermissionRole")]
-        public async Task<ActionResult> UpdatePermissionRole([FromBody] PermissionRole PermissionRole)
+        public async Task<ActionResult<PermissionRole>> UpdatePermissionRole([FromBody] PermissionRole PermissionRole)
         {
             var data = await db_PermissionRole.GetById(PermissionRole.PermissionRoleId);
             if (data != null)
             {
+                data.PermissionId = PermissionRole.PermissionId;
+                data.RoleId = PermissionRole.RoleId;
+                data.UpdatedAt = PermissionRole.UpdatedAt;
                 await db_PermissionRole.Update(data);
                 return Ok();
             }

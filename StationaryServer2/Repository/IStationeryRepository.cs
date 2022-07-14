@@ -1,4 +1,5 @@
-﻿using StationaryServer2.Models.Stationary;
+﻿using Ardalis.Specification;
+using StationaryServer2.Models.Stationary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,9 @@ namespace StationaryServer2.Repository
         Task<List<T>> ListAll();
         Task Insert(T entity);
         Task Delete(T entity);
-        Task Update(T entity);
-        //Task<List<T>> ListAsyncSpec(ISpecification<T> spec);
-        //Task<T> GetAsyncSpec(ISpecification<T> spec);
+        Task<T> Update(T entity);
+        //Task<T> CheckPass(T entity);
+        Task<List<T>> ListAsyncSpec(ISpecification<T> spec);
+        Task<T> GetAsyncSpec(ISpecification<T> spec);
     }
 }

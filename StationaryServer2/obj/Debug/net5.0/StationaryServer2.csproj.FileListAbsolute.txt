@@ -22,7 +22,6 @@ C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Microsoft.OpenApi.dll
-C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Newtonsoft.Json.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -55,7 +54,6 @@ C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\StationaryServer2.RazorTargetAssemblyInfo.cache
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\StationaryServer2.csproj.CopyComplete
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\StationaryServer2.dll
-C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\refint\StationaryServer2.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\StationaryServer2.pdb
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\StationaryServer2.genruntimeconfig.cache
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\ref\StationaryServer2.dll
@@ -66,7 +64,6 @@ D:\Back_end\StationaryServer2\bin\Debug\net5.0\StationaryServer2.deps.json
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\StationaryServer2.runtimeconfig.json
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\StationaryServer2.runtimeconfig.dev.json
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\StationaryServer2.dll
-D:\Back_end\StationaryServer2\bin\Debug\net5.0\ref\StationaryServer2.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\StationaryServer2.pdb
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\AutoMapper.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Humanizer.dll
@@ -84,7 +81,6 @@ D:\Back_end\StationaryServer2\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Microsoft.OpenApi.dll
-D:\Back_end\StationaryServer2\bin\Debug\net5.0\Newtonsoft.Json.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -120,3 +116,13 @@ D:\Back_end\StationaryServer2\obj\Debug\net5.0\StationaryServer2.dll
 D:\Back_end\StationaryServer2\obj\Debug\net5.0\ref\StationaryServer2.dll
 D:\Back_end\StationaryServer2\obj\Debug\net5.0\StationaryServer2.pdb
 D:\Back_end\StationaryServer2\obj\Debug\net5.0\StationaryServer2.genruntimeconfig.cache
+D:\Back_end\StationaryServer2\obj\Debug\net5.0\refint\StationaryServer2.dll
+D:\Back_end\StationaryServer2\bin\Debug\net5.0\Ardalis.Specification.dll
+D:\Back_end\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll
+D:\Back_end\StationaryServer2\bin\Debug\net5.0\FluentAssertions.dll
+D:\Back_end\StationaryServer2\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\ref\StationaryServer2.dll
+C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Ardalis.Specification.dll
+C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\FluentAssertions.dll
+C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll
