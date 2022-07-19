@@ -121,8 +121,8 @@ D:\Back_end\StationaryServer2\bin\Debug\net5.0\Ardalis.Specification.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\FluentAssertions.dll
 D:\Back_end\StationaryServer2\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\ref\StationaryServer2.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Ardalis.Specification.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\FluentAssertions.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\bin\Debug\net5.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\Asus\source\repos\StationaryServer2\StationaryServer2\obj\Debug\net5.0\refint\StationaryServer2.dll

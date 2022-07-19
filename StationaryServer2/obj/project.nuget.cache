@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sBc9KnEWfvuvPY/MKfsS0oguNqiRMuSEALaoNbPQ3POo7kT9u8HhPMcMljd12GlSlBydmy7DDzkn21Ch4PSfBg==",
+  "dgSpecHash": "O+btvXG1AdoK0DaOQ8XM6WVevTiwmSXl5+CHWSQ8HvBQz+iwDHROlH8bblIH6QkLZDh4Wfe2KyuzNd815fZNyw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
   "expectedPackageFiles": [
@@ -114,7 +114,8 @@
     "C:\\Users\\Asus\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\Asus\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
+    "C:\\Users\\Asus\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
+    "C:\\Users\\Asus\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\5.0.17\\microsoft.netcore.app.host.win-x64.5.0.17.nupkg.sha512"
   ],
   "logs": []
 }

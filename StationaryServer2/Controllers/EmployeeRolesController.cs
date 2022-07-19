@@ -12,7 +12,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EmployeeRolesController : ControllerBase
     {
         private IStationeryRepository<EmployeeRole> db_EmployeeRole;

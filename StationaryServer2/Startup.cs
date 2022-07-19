@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -16,6 +17,7 @@ using StationaryServer2.Repository;
 using StationaryServer2.service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +46,7 @@ namespace StationaryServer2
 
             #region Register Service
             services.AddScoped(typeof(IStationeryRepository<>), typeof(StationeryRepository<>));
+            services.AddScoped<IRepositoryAll, RepositoryAll>();
             services.AddScoped<IJwtService, JwtService>();
             #endregion
 
@@ -139,10 +142,15 @@ namespace StationaryServer2
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors(AllowSpecificOrigins);
             //khai bao tren them vao ow duoi
             app.UseAuthentication();
-            app.UseAuthorization();
-
+            app.UseAuthorization();           
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),
+                RequestPath = "/Images"
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -17,7 +17,6 @@ namespace StationaryServer2.Models.Stationary
         public int? Quantity { get; set; }
         public int Price { get; set; }
         public string FeatureImgPath { get; set; }
-        public string FeatureImgName { get; set; }
         public int? CategoryId { get; set; }
         public bool? ProductEnable { get; set; }
         public DateTime? CreatedAt { get; set; }

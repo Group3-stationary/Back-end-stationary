@@ -14,16 +14,19 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EmployeesController : ControllerBase
     {
         private IStationeryRepository<Employee> db_employee;
+        private IStationeryRepository<EmployeeRole> db_employee_role;
+        private IRepositoryAll repositoryAll;
         Byte[] originalBytes;
         Byte[] encodedBytes;
         public MD5 md5;
-        public EmployeesController(IStationeryRepository<Employee> db_employee)
+        public EmployeesController(IStationeryRepository<Employee> db_employee, IRepositoryAll repositoryAll)
         {
             this.db_employee = db_employee;
+            this.repositoryAll = repositoryAll;
         }
 
 
@@ -80,12 +83,14 @@ namespace StationaryServer2.Controllers
         public async Task<ActionResult> DeleteEmployee(string id)
         {
             var data = await db_employee.GetById(id);
-            if (data == null)
+           
+            if (data != null)
             {
-                return NotFound();
+                bool dataRole = repositoryAll.DeleteRoleEmpid(id).Result;            
+                    await db_employee.Delete(data);
+                    return NoContent();          
             }
-            await db_employee.Delete(data);
-            return NoContent();
+            return NotFound();
         }
     }
 }

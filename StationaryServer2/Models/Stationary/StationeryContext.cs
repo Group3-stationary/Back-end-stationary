@@ -260,11 +260,6 @@ namespace StationaryServer2.Models.Stationary
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
 
-                entity.Property(e => e.FeatureImgName)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("feature_img_name");
-
                 entity.Property(e => e.FeatureImgPath)
                     .HasMaxLength(255)
                     .IsUnicode(false)
