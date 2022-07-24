@@ -12,7 +12,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class RolesController : ControllerBase
     {
         private IStationeryRepository<Role> db_Role;
@@ -43,16 +43,15 @@ namespace StationaryServer2.Controllers
         [HttpPut("UpdateRole")]
         public async Task<ActionResult<Role>> UpdateRole([FromBody] Role Role)
         {
-            var data = await db_Role.GetById(Role.RoleId);
-            if (data != null)
+            try
             {
-                data.RoleName = Role.RoleName;
-                data.DisplayName = Role.DisplayName;
-                data.UpdatedAt = Role.UpdatedAt;
-                await db_Role.Update(data);
-                return Ok();
+                var updatePro = await db_Role.Update(Role);
+                return Ok(updatePro);
             }
-            return NotFound();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
         }
         [HttpDelete("RoleId")]

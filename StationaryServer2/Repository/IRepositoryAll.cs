@@ -8,6 +8,6 @@ namespace StationaryServer2.Repository
 {
     public interface IRepositoryAll
     {
-        Task<bool> DeleteRoleEmpid(string empid);
+    
     }
 }

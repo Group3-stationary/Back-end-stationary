@@ -5928,11 +5928,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
+      "projectUniqueName": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
       "projectName": "StationaryServer2",
-      "projectPath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
+      "projectPath": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
       "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\obj\\",
+      "outputPath": "D:\\Back_end\\StationaryServer2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6017,12 +6017,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[5.0.17, 5.0.17]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -6031,7 +6025,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

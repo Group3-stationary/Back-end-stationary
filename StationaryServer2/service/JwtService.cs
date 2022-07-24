@@ -90,33 +90,14 @@ namespace StationaryServer2.service
 
             // lay role cua employee, gan user Role ben duoi
             //var roles = await _userManager.GetRolesAsync(user); new List<string>()
-            var check_data = (from a in this._context.EmployeeRoles
-                              join b in this._context.Roles on a.RoleId equals b.RoleId
-                              where a.EmployeeId.Equals(employee.EmployeeId)
-                              select b.RoleName);
-
-            if (check_data != null)
+            return new LoginResponse
             {
-                return new LoginResponse
-                {
-                    UserName = employee.EmployeeName,
-                    Token = jwtToken,
-                    RequestToken = refreshToken.Token,
-                    UserRoles = check_data,
-                };
-            }
-            else
-            {
-                return new LoginResponse
-                {
-                    UserName = employee.EmployeeName,
-                    Token = jwtToken,
-                    RequestToken = refreshToken.Token,
-                    UserRoles = null,
-                };
-            }
-
-
+                UserName = employee.EmployeeName,
+                Token = jwtToken,
+                RequestToken = refreshToken.Token,
+                UserRoles = employee.RoleId,
+                IsAdmin = employee.IsAdmin,
+            };
         }
 
         public async Task<dynamic> VerifyAndGenerateToken(string token, string refreshToken)

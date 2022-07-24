@@ -18,6 +18,7 @@ namespace StationaryServer2.Models.Stationary
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
+        public virtual Employee Employee { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

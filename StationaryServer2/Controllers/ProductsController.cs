@@ -49,45 +49,87 @@ namespace StationaryServer2.Controllers
             return CreatedAtAction(nameof(GetCategories), new { id = Product.ProductId }, Product);
         }
         [HttpPut("UpdateProduct")]
-        public async Task<ActionResult<Product>> UpdateProduct(List<IFormFile> files, Product Product)
+        public async Task<ActionResult<Product>> UpdateProduct(List<IFormFile> files,[FromForm] string Jsonproduct)
         {
-            var data = await db_Product.GetById(Product.ProductId);
-            if (data != null)
+            // Config JSON 
+            var options = new JsonSerializerOptions
             {
-                data.ProductName = Product.ProductName;
-                data.Quantity = Product.Quantity;
-                data.Price = Product.Price;
-                data.FeatureImgPath = Product.FeatureImgPath;
-                data.CategoryId = Product.CategoryId;
-                data.ProductEnable = Product.ProductEnable;
-                data.UpdatedAt = Product.UpdatedAt;
-                data.DeletedAt = Product.DeletedAt;
-
-                if (files.Count > 0)
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
+            };
+            // Convert JSON string sang Object
+            var productRequest = JsonSerializer.Deserialize<Product>(Jsonproduct, options);
+            try
+            {
+                var formFile = files[0];
+                if (formFile.Length > 0)
                 {
-                    var formFile = files[0];
-                    if (formFile.Length > 0)
+                    var filePath = Path.Combine(_env.ContentRootPath, "Images/products/", productRequest.ProductId.ToString());
+                    if (!Directory.Exists(filePath))
                     {
-                        // Sau khi luu Product se co duoc Product Id
-                        var filePath = Path.Combine(_env.ContentRootPath, "Images/products/", data.ProductId.ToString());
-                        if (!Directory.Exists(filePath))
-                        {
-                            Directory.CreateDirectory(filePath);
-                        }
-                        filePath = Path.Combine(filePath, formFile.FileName);
-
-                        using var stream = new FileStream(filePath, FileMode.Create);
-                        await formFile.CopyToAsync(stream);
-
-                        // Cap nhat lai url cua san pham sau luu xong hinh anh
-                        data.FeatureImgPath = "Images/products/" + data.ProductId.ToString() + "/" + formFile.FileName;
+                        Directory.CreateDirectory(filePath);
                     }
+                    filePath = Path.Combine(filePath, formFile.FileName);
+
+                    using var stream = new FileStream(filePath, FileMode.Create);
+                    await formFile.CopyToAsync(stream);
+
+                    // Cap nhat lai url cua san pham sau luu xong hinh anh
+                    productRequest.FeatureImgPath = "Images/products/" + productRequest.ProductId.ToString() + "/" + formFile.FileName;
+                    var updatePro = await db_Product.Update(productRequest);
+                    return Ok(updatePro);
                 }
-                await db_Product.Update(data);
-                        return Ok();
-                
+                else
+                {
+                    var updatePro = await db_Product.Update(productRequest);
+                    return Ok(updatePro);
+                }
             }
-            return NotFound();
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+           
+            #region
+            //var data = await db_Product.GetById(Product.ProductId);
+            //if (data != null)
+            //{
+            //    data.ProductName = Product.ProductName;
+            //    data.Quantity = Product.Quantity;
+            //    data.Price = Product.Price;
+            //    data.FeatureImgPath = Product.FeatureImgPath;
+            //    data.CategoryId = Product.CategoryId;
+            //    data.ProductEnable = Product.ProductEnable;
+            //    data.UpdatedAt = Product.UpdatedAt;
+            //    data.DeletedAt = Product.DeletedAt;
+
+            //    if (files.Count > 0)
+            //    {
+            //        var formFile = files[0];
+            //        if (formFile.Length > 0)
+            //        {
+            //            // Sau khi luu Product se co duoc Product Id
+            //            var filePath = Path.Combine(_env.ContentRootPath, "Images/products/", data.ProductId.ToString());
+            //            if (!Directory.Exists(filePath))
+            //            {
+            //                Directory.CreateDirectory(filePath);
+            //            }
+            //            filePath = Path.Combine(filePath, formFile.FileName);
+
+            //            using var stream = new FileStream(filePath, FileMode.Create);
+            //            await formFile.CopyToAsync(stream);
+
+            //            // Cap nhat lai url cua san pham sau luu xong hinh anh
+            //            data.FeatureImgPath = "Images/products/" + data.ProductId.ToString() + "/" + formFile.FileName;
+            //        }
+            //    }
+            //    await db_Product.Update(data);
+            //            return Ok();
+
+            //}
+            //return NotFound();
+            #endregion
 
         }
         [HttpDelete("ProductId")]

@@ -7,6 +7,7 @@ namespace StationaryServer2.DTO.Product
 {
     public class ProductRequest
     {
+
         public string ProductName { get; set; }
         public int? Quantity { get; set; }
         public int Price { get; set; }
