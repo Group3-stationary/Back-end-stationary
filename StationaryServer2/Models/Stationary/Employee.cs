@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -10,6 +9,7 @@ namespace StationaryServer2.Models.Stationary
     {
         public Employee()
         {
+            Orders = new HashSet<Order>();
             RefreshTokens = new HashSet<RefreshToken>();
         }
 
@@ -23,11 +23,13 @@ namespace StationaryServer2.Models.Stationary
         public string Password { get; set; }
         public string Department { get; set; }
         public int? Superiors { get; set; }
+        public int RoleId { get; set; }
         public bool? IsAdmin { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
+        public virtual Role Role { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 }
-

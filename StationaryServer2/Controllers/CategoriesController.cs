@@ -41,18 +41,16 @@ namespace StationaryServer2.Controllers
         [HttpPut("UpdateCategory")]
         public async Task<ActionResult<Category>> UpdateCategory([FromBody] Category category)
         {
-            var data = await db_category.GetById(category.CategotyId);
-            if (data!= null)
+            try
             {
-                data.CategotyName = category.CategotyName;
-                data.CreatedAt = category.CreatedAt;
-                data.IdParent = category.IdParent;
-                data.UpdatedAt = category.UpdatedAt;
-                data.DeletedAt = category.DeletedAt;
-                await db_category.Update(data);
-                return Ok();
+                var data = await db_category.Update(category);
+                return Ok(data);
             }
-            return NotFound();
+            catch (System.Exception)
+            {
+
+                return BadRequest();
+            }
             
         }
         [HttpDelete("CategoryId")]

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj": {}
+    "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj": {
+    "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
+        "projectUniqueName": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
         "projectName": "StationaryServer2",
-        "projectPath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
+        "projectPath": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\obj\\",
+        "outputPath": "D:\\Back_end\\StationaryServer2\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

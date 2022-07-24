@@ -43,15 +43,15 @@ namespace StationaryServer2.Controllers
         [HttpPut("UpdateOrder")]
         public async Task<ActionResult<Order>> UpdateOrder([FromBody] Order Order)
         {
-            var data = await db_Order.GetById(Order.OrderId);
-            if (data != null)
+            try
             {
-                data.Status = Order.Status;
-                data.UpdatedAt = Order.UpdatedAt;
-                await db_Order.Update(data);
-                return Ok();
+                var updatePro = await db_Order.Update(Order);
+                return Ok(updatePro);
             }
-            return NotFound();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
         }
         [HttpDelete("OrderId")]

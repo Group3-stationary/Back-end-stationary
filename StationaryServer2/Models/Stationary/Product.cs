@@ -17,13 +17,15 @@ namespace StationaryServer2.Models.Stationary
         public int? Quantity { get; set; }
         public int Price { get; set; }
         public string FeatureImgPath { get; set; }
-        public string FeatureImgName { get; set; }
         public int? CategoryId { get; set; }
         public bool? ProductEnable { get; set; }
+        public int RoleId { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
+        public virtual Category Category { get; set; }
+        public virtual Role Role { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }
     }
 }

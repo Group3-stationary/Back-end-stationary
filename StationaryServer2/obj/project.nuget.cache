@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sBc9KnEWfvuvPY/MKfsS0oguNqiRMuSEALaoNbPQ3POo7kT9u8HhPMcMljd12GlSlBydmy7DDzkn21Ch4PSfBg==",
+  "dgSpecHash": "YIuDxtRab10MdY9NqwwaNKovJ4+vwQSJMXAsYQGPAXfZgiFo3L8ekq5BxMDyIbzvYgzU+EXhn2NBhMUCmknVcA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Asus\\source\\repos\\StationaryServer2\\StationaryServer2\\StationaryServer2.csproj",
+  "projectFilePath": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Asus\\.nuget\\packages\\ardalis.specification\\5.2.0\\ardalis.specification.5.2.0.nupkg.sha512",
     "C:\\Users\\Asus\\.nuget\\packages\\automapper\\8.0.0\\automapper.8.0.0.nupkg.sha512",

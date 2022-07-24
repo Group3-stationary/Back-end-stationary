@@ -19,12 +19,8 @@ namespace StationaryServer2.Models.Stationary
 
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<EmployeeRole> EmployeeRoles { get; set; }
-        public virtual DbSet<Information> Information { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderItem> OrderItems { get; set; }
-        public virtual DbSet<Permission> Permissions { get; set; }
-        public virtual DbSet<PermissionRole> PermissionRoles { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
@@ -33,7 +29,8 @@ namespace StationaryServer2.Models.Stationary
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=Stationery; user id=sa; password=1;");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=Stationery; user id=sa; password=1");
             }
         }
 
@@ -44,7 +41,7 @@ namespace StationaryServer2.Models.Stationary
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.HasKey(e => e.CategotyId)
-                    .HasName("PK__Category__2A863D5D6DFA43F7");
+                    .HasName("PK__Category__2A863D5D3CEFB49A");
 
                 entity.ToTable("Category");
 
@@ -118,42 +115,19 @@ namespace StationaryServer2.Models.Stationary
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
+                entity.Property(e => e.RoleId).HasColumnName("Role_id");
+
                 entity.Property(e => e.Superiors).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("Updated_at");
-            });
 
-            modelBuilder.Entity<EmployeeRole>(entity =>
-            {
-                entity.HasKey(e => e.EmployeeRolesId)
-                    .HasName("PK__Employee__B7B617939685EE70");
-
-                entity.ToTable("Employee_role");
-
-                entity.Property(e => e.EmployeeRolesId).HasColumnName("Employee_roles_id");
-
-                entity.Property(e => e.EmployeeId)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RoleId).HasColumnName("Role_Id");
-            });
-
-            modelBuilder.Entity<Information>(entity =>
-            {
-                entity.HasKey(e => e.Title)
-                    .HasName("PK__Informat__2CB664DDDEF81293");
-
-                entity.Property(e => e.Title)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Content)
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Employees)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Employee_Roles_Role_id");
             });
 
             modelBuilder.Entity<Order>(entity =>
@@ -177,6 +151,12 @@ namespace StationaryServer2.Models.Stationary
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("Updated_at");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Orders)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Orders_Employee_EmployeeId");
             });
 
             modelBuilder.Entity<OrderItem>(entity =>
@@ -196,54 +176,18 @@ namespace StationaryServer2.Models.Stationary
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("Updated_at");
-            });
 
-            modelBuilder.Entity<Permission>(entity =>
-            {
-                entity.HasKey(e => e.PermissionsId)
-                    .HasName("PK__Permissi__1EDAF9A85BABCFD4");
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderItems)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Orders_Order_items_Order_id");
 
-                entity.ToTable("Permission");
-
-                entity.Property(e => e.CreatedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Created_at");
-
-                entity.Property(e => e.DisplayName)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("Display_name");
-
-                entity.Property(e => e.ParentId).HasColumnName("Parent_id");
-
-                entity.Property(e => e.PermissionsName)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UpdatedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
-            });
-
-            modelBuilder.Entity<PermissionRole>(entity =>
-            {
-                entity.ToTable("Permission_role");
-
-                entity.Property(e => e.PermissionRoleId).HasColumnName("Permission_role_id");
-
-                entity.Property(e => e.CreatedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Created_at");
-
-                entity.Property(e => e.PermissionId).HasColumnName("Permission_id");
-
-                entity.Property(e => e.RoleId).HasColumnName("Role_id");
-
-                entity.Property(e => e.UpdatedAt)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Updated_at");
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderItems)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Products_Order_items_Product_id");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -259,11 +203,6 @@ namespace StationaryServer2.Models.Stationary
                 entity.Property(e => e.DeletedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("deleted_at");
-
-                entity.Property(e => e.FeatureImgName)
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("feature_img_name");
 
                 entity.Property(e => e.FeatureImgPath)
                     .HasMaxLength(255)
@@ -281,21 +220,52 @@ namespace StationaryServer2.Models.Stationary
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.RoleId).HasColumnName("Role_id");
+
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.CategoryId)
+                    .HasConstraintName("fk_product_categories_categoryid");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Employee_Product_Roles_Role_id");
             });
 
             modelBuilder.Entity<RefreshToken>(entity =>
             {
+                entity.ToTable("RefreshToken");
+
+                entity.Property(e => e.AddedDate).HasColumnType("datetime");
+
                 entity.Property(e => e.EmployeeId)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.JwtId)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Token)
+                    .IsRequired()
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.RefreshTokens)
                     .HasForeignKey(d => d.EmployeeId)
-                    .HasConstraintName("FK_RefreshTokens_RefreshTokens");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Employee_RefreshToken_EmployeeId");
             });
 
             modelBuilder.Entity<Role>(entity =>
@@ -305,12 +275,6 @@ namespace StationaryServer2.Models.Stationary
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("Created_at");
-
-                entity.Property(e => e.DisplayName)
-                    .IsRequired()
-                    .HasMaxLength(255)
-                    .IsUnicode(false)
-                    .HasColumnName("Display_name");
 
                 entity.Property(e => e.RoleName)
                     .IsRequired()
@@ -328,4 +292,3 @@ namespace StationaryServer2.Models.Stationary
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
-

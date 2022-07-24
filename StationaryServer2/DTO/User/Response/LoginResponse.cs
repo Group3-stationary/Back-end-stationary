@@ -11,6 +11,7 @@ namespace StationaryServer2.DTO.User.Response
         public string UserName { get; set; }
         public string Token { get; set; }
         public string RequestToken { get; set; }
-        public IEnumerable<string> UserRoles { get; set; }
+        public int UserRoles { get; set; }
+        public bool? IsAdmin { get; set; }
     }
 }

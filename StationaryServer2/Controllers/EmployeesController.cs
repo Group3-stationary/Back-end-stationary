@@ -14,16 +14,18 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EmployeesController : ControllerBase
     {
         private IStationeryRepository<Employee> db_employee;
+        private IRepositoryAll repositoryAll;
         Byte[] originalBytes;
         Byte[] encodedBytes;
         public MD5 md5;
-        public EmployeesController(IStationeryRepository<Employee> db_employee)
+        public EmployeesController(IStationeryRepository<Employee> db_employee, IRepositoryAll repositoryAll)
         {
             this.db_employee = db_employee;
+            this.repositoryAll = repositoryAll;
         }
 
 
@@ -56,36 +58,28 @@ namespace StationaryServer2.Controllers
         [HttpPut("UpdateEmployee")]
         public async Task<ActionResult<Employee>> UpdateEmployee([FromBody] Employee employee)
         {
-            var data = await db_employee.GetById(employee.EmployeeId);
-            if (data != null)
+            try
             {
-                data.EmployeeName = employee.EmployeeName;
-                data.Email = employee.Email;
-                data.Address = employee.Address;
-                data.Birthday = employee.Birthday;
-                data.Department = employee.Department;
-                data.Password = EncodePassword(employee.Password);
-                data.Phone = employee.Phone;
-                data.Gender = employee.Gender;
-                data.Superiors = employee.Superiors;
-                data.IsAdmin = employee.IsAdmin;
-                data.UpdatedAt = employee.UpdatedAt;
-                await db_employee.Update(data);
-                return Ok();
+                var updatePro = await db_employee.Update(employee);
+                return Ok(updatePro);
             }
-            return NotFound();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
         }
         [HttpDelete("EmployeeId")]
         public async Task<ActionResult> DeleteEmployee(string id)
         {
             var data = await db_employee.GetById(id);
-            if (data == null)
-            {
-                return NotFound();
+           
+            if (data != null)
+            {        
+                 await db_employee.Delete(data);
+                 return NoContent();          
             }
-            await db_employee.Delete(data);
-            return NoContent();
+            return NotFound();
         }
     }
 }
