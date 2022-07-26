@@ -16,9 +16,11 @@ namespace StationaryServer2.Controllers
     public class RolesController : ControllerBase
     {
         private IStationeryRepository<Role> db_Role;
-        public RolesController(IStationeryRepository<Role> db_Role)
+        private IStationeryRepository<Employee> db_Employee;
+        public RolesController(IStationeryRepository<Role> db_Role, IStationeryRepository<Employee> db_Employee)
         {
             this.db_Role = db_Role;
+            this.db_Employee = db_Employee;
         }
 
 
@@ -64,6 +66,34 @@ namespace StationaryServer2.Controllers
             }
             await db_Role.Delete(data);
             return NoContent();
+        }
+
+        [HttpPost("SetUpBudget")]
+
+        public async Task<ActionResult> SetUpBudget([FromBody] List<Role> roles)
+        {
+            try
+            {
+                IEnumerable<Employee> employees = await db_Employee.ListAll();
+                foreach (Role role in roles)
+                {
+                    await db_Role.Update(role);
+                    foreach (Employee employee in employees)
+                    {
+                        if (employee.RoleId == role.RoleId)
+                        {
+                            employee.Budget = role.Budget;
+                        }
+                        await db_Employee.Update(employee);
+                    }
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
     }
 }

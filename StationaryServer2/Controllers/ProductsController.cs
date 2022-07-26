@@ -18,7 +18,7 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IWebHostEnvironment _env;
@@ -41,110 +41,8 @@ namespace StationaryServer2.Controllers
         {
             return await db_Product.GetById(id);
         }
+
         [HttpPost("CreateProduct")]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] Product Product)
-        {
-
-            await db_Product.Insert(Product);
-            return CreatedAtAction(nameof(GetCategories), new { id = Product.ProductId }, Product);
-        }
-        [HttpPut("UpdateProduct")]
-        public async Task<ActionResult<Product>> UpdateProduct(List<IFormFile> files,[FromForm] string Jsonproduct)
-        {
-            // Config JSON 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
-            };
-            // Convert JSON string sang Object
-            var productRequest = JsonSerializer.Deserialize<Product>(Jsonproduct, options);
-            try
-            {
-                var formFile = files[0];
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.Combine(_env.ContentRootPath, "Images/products/", productRequest.ProductId.ToString());
-                    if (!Directory.Exists(filePath))
-                    {
-                        Directory.CreateDirectory(filePath);
-                    }
-                    filePath = Path.Combine(filePath, formFile.FileName);
-
-                    using var stream = new FileStream(filePath, FileMode.Create);
-                    await formFile.CopyToAsync(stream);
-
-                    // Cap nhat lai url cua san pham sau luu xong hinh anh
-                    productRequest.FeatureImgPath = "Images/products/" + productRequest.ProductId.ToString() + "/" + formFile.FileName;
-                    var updatePro = await db_Product.Update(productRequest);
-                    return Ok(updatePro);
-                }
-                else
-                {
-                    var updatePro = await db_Product.Update(productRequest);
-                    return Ok(updatePro);
-                }
-            }
-            catch (Exception)
-            {
-
-                return BadRequest();
-            }
-           
-            #region
-            //var data = await db_Product.GetById(Product.ProductId);
-            //if (data != null)
-            //{
-            //    data.ProductName = Product.ProductName;
-            //    data.Quantity = Product.Quantity;
-            //    data.Price = Product.Price;
-            //    data.FeatureImgPath = Product.FeatureImgPath;
-            //    data.CategoryId = Product.CategoryId;
-            //    data.ProductEnable = Product.ProductEnable;
-            //    data.UpdatedAt = Product.UpdatedAt;
-            //    data.DeletedAt = Product.DeletedAt;
-
-            //    if (files.Count > 0)
-            //    {
-            //        var formFile = files[0];
-            //        if (formFile.Length > 0)
-            //        {
-            //            // Sau khi luu Product se co duoc Product Id
-            //            var filePath = Path.Combine(_env.ContentRootPath, "Images/products/", data.ProductId.ToString());
-            //            if (!Directory.Exists(filePath))
-            //            {
-            //                Directory.CreateDirectory(filePath);
-            //            }
-            //            filePath = Path.Combine(filePath, formFile.FileName);
-
-            //            using var stream = new FileStream(filePath, FileMode.Create);
-            //            await formFile.CopyToAsync(stream);
-
-            //            // Cap nhat lai url cua san pham sau luu xong hinh anh
-            //            data.FeatureImgPath = "Images/products/" + data.ProductId.ToString() + "/" + formFile.FileName;
-            //        }
-            //    }
-            //    await db_Product.Update(data);
-            //            return Ok();
-
-            //}
-            //return NotFound();
-            #endregion
-
-        }
-        [HttpDelete("ProductId")]
-        public async Task<ActionResult> DeleteProduct(int id)
-        {
-            var data = await db_Product.GetById(id);
-            if (data == null)
-            {
-                return NotFound();
-            }
-            await db_Product.Delete(data);
-            return NoContent();
-        }
-
-        [HttpPost("UpdateImage")]
         public async Task<ActionResult<HttpResponseMessage>> HandleAsync(List<IFormFile> files, [FromForm] string productJson)
         {
 
@@ -175,9 +73,10 @@ namespace StationaryServer2.Controllers
                             ProductName = productRequest.ProductName,
                             Quantity = productRequest.Quantity,
                             Price = productRequest.Price,
-                            CategoryId = productRequest.CategoryId,       
+                            CategoryId = productRequest.CategoryId,
                             ProductEnable = productRequest.ProductEnable,
                             CreatedAt = productRequest.CreatedAt,
+                            RoleId = productRequest.RoleId,
                             UpdatedAt = productRequest.UpdatedAt,
                             DeletedAt = productRequest.DeletedAt,
 
@@ -212,7 +111,7 @@ namespace StationaryServer2.Controllers
                     product.ProductName,
                     product.Quantity,
                     product.Price,
-                    product.CategoryId,             
+                    product.CategoryId,
                     product.ProductEnable,
                     product.CreatedAt,
                     product.UpdatedAt,
@@ -226,5 +125,64 @@ namespace StationaryServer2.Controllers
                 throw;
             }
         }
+        [HttpPut("UpdateProduct")]
+        public async Task<ActionResult<Product>> UpdateProduct(List<IFormFile> files, [FromForm] string productJson)
+        {
+            // Config JSON 
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
+            };
+            // Convert JSON string sang Object
+            var productRequest = JsonSerializer.Deserialize<Product>(productJson, options);
+            try
+            {
+                if (files.Count > 0)
+                {
+                    var formFile = files[0];
+
+                    if (formFile.Length > 0)
+                    {
+                        var filePath = Path.Combine(_env.ContentRootPath, "Images/products/", productRequest.ProductId.ToString());
+                        if (!Directory.Exists(filePath))
+                        {
+                            Directory.CreateDirectory(filePath);
+                        }
+                        filePath = Path.Combine(filePath, formFile.FileName);
+
+                        using var stream = new FileStream(filePath, FileMode.Create);
+                        await formFile.CopyToAsync(stream);
+
+                        // Cap nhat lai url cua san pham sau luu xong hinh anh
+                        productRequest.FeatureImgPath = "Images/products/" + productRequest.ProductId.ToString() + "/" + formFile.FileName;
+                        var updatePro = await db_Product.Update(productRequest);
+                        return Ok(updatePro);
+                    }
+                }
+
+                var update= await db_Product.Update(productRequest);
+                return Ok(update);
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
+
+        }
+        [HttpDelete("ProductId")]
+        public async Task<ActionResult> DeleteProduct(int id)
+        {
+            var data = await db_Product.GetById(id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            await db_Product.Delete(data);
+            return NoContent();
+        }
+
+
     }
 }

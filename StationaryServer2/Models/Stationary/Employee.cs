@@ -25,6 +25,7 @@ namespace StationaryServer2.Models.Stationary
         public int? Superiors { get; set; }
         public int RoleId { get; set; }
         public bool? IsAdmin { get; set; }
+        public int? Budget { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 

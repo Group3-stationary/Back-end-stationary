@@ -8,9 +8,10 @@ namespace StationaryServer2.DTO.User.Response
 {
     public class LoginResponse
     {
-        public string UserName { get; set; }
+        public string EmployeeName { get; set; }
+        public string EmployeeID { get; set; }
         public string Token { get; set; }
-        public string RequestToken { get; set; }
+        public string RefreshToken { get; set; }
         public int UserRoles { get; set; }
         public bool? IsAdmin { get; set; }
     }

@@ -23,26 +23,19 @@ namespace StationaryServer2.service
     {
         //doc ket noi
         private readonly JwtConfig _jwtConfig;
-        private readonly TokenValidationParameters _tokenValidationParams;
-        private readonly StationeryContext _context;
         private readonly IStationeryRepository<RefreshToken> _refreshTokenRepository;
         private readonly IStationeryRepository<Employee> _employeeRepository;
-        private readonly IStationeryRepository<Role> _roleRepository;
         public JwtService(
                StationeryContext context,
                IStationeryRepository<RefreshToken> refreshTokenRepository,
                IStationeryRepository<Employee> employeeRepository,
-               IStationeryRepository<Role> roleRepository,
                TokenValidationParameters tokenValidationParams,
                IOptionsMonitor<JwtConfig> optionsMonitor)
         {
             this._refreshTokenRepository = refreshTokenRepository;
             //ket noi tu dong
             this._jwtConfig = optionsMonitor.CurrentValue;
-            this._tokenValidationParams = tokenValidationParams;
             this._employeeRepository = employeeRepository;
-            this._roleRepository = roleRepository;
-            this._context = context;
         }
 
         //cap jwt
@@ -72,9 +65,6 @@ namespace StationaryServer2.service
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = jwtTokenHandler.WriteToken(token);
 
-
-
-
             var refreshToken = new RefreshToken()
             {
                 JwtId = token.Id,
@@ -92,9 +82,10 @@ namespace StationaryServer2.service
             //var roles = await _userManager.GetRolesAsync(user); new List<string>()
             return new LoginResponse
             {
-                UserName = employee.EmployeeName,
+                EmployeeName = employee.EmployeeName,
+                EmployeeID = employee.EmployeeId,
                 Token = jwtToken,
-                RequestToken = refreshToken.Token,
+                RefreshToken = refreshToken.Token,
                 UserRoles = employee.RoleId,
                 IsAdmin = employee.IsAdmin,
             };
@@ -211,7 +202,7 @@ namespace StationaryServer2.service
                 await _refreshTokenRepository.Update(storedToken);
 
                 // Generate a new token
-                var dbUser = await _employeeRepository.GetById(storedToken.EmployeeId); // _userManager.Users.Where(u => u.Id == storedToken.UserId).FirstOrDefault();
+                var dbUser = await _employeeRepository.GetById(storedToken.EmployeeId);
                 return await GenerateJwtToken(dbUser);
             }
             catch (Exception ex)
