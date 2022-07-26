@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StationaryServer2.DTO.User.Request;
 using StationaryServer2.Models.Stationary;
 using StationaryServer2.Repository;
 using System;
@@ -16,9 +17,11 @@ namespace StationaryServer2.Controllers
     public class OrderItemsController : ControllerBase
     {
         private IStationeryRepository<OrderItem> db_OrderItem;
-        public OrderItemsController(IStationeryRepository<OrderItem> db_OrderItem)
+        private IStationeryRepository<Order> db_Order;
+        public OrderItemsController(IStationeryRepository<OrderItem> db_OrderItem,IStationeryRepository<Order> db_Order)
         {
             this.db_OrderItem = db_OrderItem;
+            this.db_Order = db_Order;
         }
 
 
@@ -33,13 +36,7 @@ namespace StationaryServer2.Controllers
         {
             return await db_OrderItem.GetById(id);
         }
-        [HttpPost("CreateOrderItem")]
-        public async Task<ActionResult<OrderItem>> CreateOrderItem([FromBody] OrderItem OrderItem)
-        {
-
-            await db_OrderItem.Insert(OrderItem);
-            return CreatedAtAction(nameof(GetCategories), new { id = OrderItem.OrderItemId }, OrderItem);
-        }
+        
         [HttpPut("UpdateOrderItem")]
         public async Task<ActionResult<OrderItem>> UpdateOrderItem([FromBody] OrderItem OrderItem)
         {
@@ -64,6 +61,40 @@ namespace StationaryServer2.Controllers
             }
             await db_OrderItem.Delete(data);
             return NoContent();
+        }
+
+        [HttpPost("CreateOrderItem")]
+
+        public async Task<ActionResult> CreateOrderItem([FromBody] OrderRequest orderRequest)
+        {
+            try
+            {
+                Order order = new Order()
+                {
+                    EmployeeId = orderRequest.EmployeeId
+                };
+
+                await db_Order.Insert(order);
+                List<Order> orders = await db_Order.ListAll();
+                int newOrderId = orders.Count - 1;
+                List<OrderItemRequest> orderItems = (List<OrderItemRequest>)orderRequest.Products;
+                foreach (OrderItemRequest item in orderItems)
+                {
+                    OrderItem orderItem = new OrderItem()
+                    {
+                        OrderId = newOrderId,
+                        ProductId = item.ProductId,
+                        Quantity = item.Quantity
+                    };
+                    await db_OrderItem.Insert(orderItem);
+                }
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
     }
 }

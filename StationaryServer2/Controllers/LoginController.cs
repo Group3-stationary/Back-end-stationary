@@ -73,63 +73,6 @@ namespace StationaryServer2.Controllers
                 return BadRequest(new LoginResponse());
             }
 
-
-            //    [HttpPost]
-            //    [Route("Register")]
-            //    [SwaggerOperation(
-            //    Summary = "Register New Account",
-            //    Description = "Register New Account",
-            //    OperationId = "UserController.Register",
-            //    Tags = new[] { "UserController" })
-            //]
-            //    public async Task<ActionResult<Employee>> HandleAsync(Employee request)
-            //    {
-            //        if (ModelState.IsValid)
-            //        {
-
-            //            var existingUser = await _employeeManager.GetById(request.EmployeeId);
-            //            if (existingUser != null)
-            //            {
-            //                return BadRequest(new LoginResponse());
-            //            }
-
-            //           var isCreated =  _employeeManager.Insert(request);
-            //            if (isCreated.IsCompletedSuccessfully)
-            //            {
-
-
-            //                //bool x = await _roleManager.RoleExistsAsync("GUEST");
-            //                //if (!x)
-            //                //{
-            //                //    // first we create Admin rool    
-            //                //    var role = new IdentityRole
-            //                //    {
-            //                //        Name = "GUEST"
-            //                //    };
-            //                //    await _roleManager.CreateAsync(role);
-
-            //                //}
-            //                Role role = new Role{
-            //                    RoleName="Hk",
-            //                };
-
-            //                //var result1 = await _employeeManager.AddToRoleAsync(newUser, "GUEST");
-            //                existingUser = await _employeeManager.GetById(request.EmployeeId);
-            //                var jwtToken = await _JwtService.GenerateJwtToken(existingUser);
-            //                return Ok(jwtToken);
-            //            }
-            //            else
-            //            {
-            //                return BadRequest(new LoginResponse());
-            //            }
-
-            //        }
-
-            //        return BadRequest(new LoginResponse());
-            //    }
-
-
-
             [HttpPost]
             [Route("RefreshToken")]
             [SwaggerOperation(
