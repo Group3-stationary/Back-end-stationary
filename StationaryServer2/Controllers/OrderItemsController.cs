@@ -13,20 +13,26 @@ namespace StationaryServer2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class OrderItemsController : ControllerBase
     {
         private IStationeryRepository<OrderItem> db_OrderItem;
         private IStationeryRepository<Order> db_Order;
-        public OrderItemsController(IStationeryRepository<OrderItem> db_OrderItem,IStationeryRepository<Order> db_Order)
+        private IStationeryRepository<Product> db_Product;
+        private IStationeryRepository<Notification> db_Notification;
+        private IStationeryRepository<Employee> db_Employee;
+        public OrderItemsController(IStationeryRepository<OrderItem> db_OrderItem,IStationeryRepository<Order> db_Order, IStationeryRepository<Notification> db_Notification, IStationeryRepository<Employee> db_Employee, IStationeryRepository<Product> db_Product)
         {
             this.db_OrderItem = db_OrderItem;
             this.db_Order = db_Order;
+            this.db_Notification = db_Notification;
+            this.db_Employee = db_Employee;
+            this.db_Product = db_Product;
         }
 
 
         ///OrderItem
-        [HttpGet("Categories")]
+        [HttpGet("OrderItems")]
         public async Task<IEnumerable<OrderItem>> GetCategories()
         {
             return await db_OrderItem.ListAll();
@@ -69,25 +75,44 @@ namespace StationaryServer2.Controllers
         {
             try
             {
+                int sumCard = 0;
                 Order order = new Order()
                 {
-                    EmployeeId = orderRequest.EmployeeId
+                    EmployeeId = orderRequest.EmployeeId,
+                    Status = orderRequest.Status,
+                    CreatedAt = orderRequest.CreatedAt
                 };
 
                 await db_Order.Insert(order);
                 List<Order> orders = await db_Order.ListAll();
-                int newOrderId = orders.Count - 1;
-                List<OrderItemRequest> orderItems = (List<OrderItemRequest>)orderRequest.Products;
-                foreach (OrderItemRequest item in orderItems)
+                int newOrderIndex = orders.Count - 1;
+                Order newOrder = orders[newOrderIndex];         
+                foreach (OrderItemRequest item in orderRequest.Products)
                 {
+                    var dataPro = await db_Product.GetById(item.ProductId);
+                    sumCard = sumCard + (item.Quantity * dataPro.Price);
                     OrderItem orderItem = new OrderItem()
                     {
-                        OrderId = newOrderId,
+                        OrderId = newOrder.OrderId,
                         ProductId = item.ProductId,
                         Quantity = item.Quantity
                     };
                     await db_OrderItem.Insert(orderItem);
                 }
+                //Tao Notification
+                Employee employee = await db_Employee.GetById(orderRequest.EmployeeId);
+                Notification notification = new Notification()
+                {
+                    SenderId = orderRequest.EmployeeId,
+                    ReceiveId = employee.Superiors,
+                    CreatedAt = orderRequest.CreatedAt,
+                    Status = "Unseen",
+                    Message = "Employee " + employee.EmployeeName + " has just ordered at " + orderRequest.CreatedAt
+                };
+                await db_Notification.Insert(notification);
+                //
+                employee.Budget = employee.Budget - sumCard;
+                await db_Employee.Update(employee);
                 return Ok();
             }
             catch (Exception)

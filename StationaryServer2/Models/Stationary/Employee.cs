@@ -22,7 +22,7 @@ namespace StationaryServer2.Models.Stationary
         public DateTime Birthday { get; set; }
         public string Password { get; set; }
         public string Department { get; set; }
-        public int? Superiors { get; set; }
+        public string Superiors { get; set; }
         public int RoleId { get; set; }
         public bool? IsAdmin { get; set; }
         public int? Budget { get; set; }
