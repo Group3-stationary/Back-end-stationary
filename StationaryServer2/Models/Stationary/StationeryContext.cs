@@ -116,7 +116,10 @@ namespace StationaryServer2.Models.Stationary
 
                 entity.Property(e => e.RoleId).HasColumnName("Role_id");
 
-                entity.Property(e => e.Superiors).HasDefaultValueSql("((0))");
+                entity.Property(e => e.Superiors)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false); ;
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
@@ -285,7 +288,36 @@ namespace StationaryServer2.Models.Stationary
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
             });
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("Notification");
 
+                entity.Property(e => e.Id).HasColumnName("Id");
+
+                entity.Property(e => e.SenderId)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ReceiveId)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Message)
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Status)
+                   .IsRequired()
+                   .HasMaxLength(255)
+                   .IsUnicode(false);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Created_at");
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

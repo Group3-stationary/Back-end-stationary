@@ -72,7 +72,7 @@ namespace StationaryServer2.service
                 IsRevorked = false,
                 EmployeeId = employee.EmployeeId,
                 AddedDate = utcNow,
-                ExpiryDate = utcNow.AddHours(_jwtConfig.ExpiredInHours),
+                ExpiryDate = utcNow.AddHours(_jwtConfig.ExpiredInHours+1),
                 Token = RandomString(35) + Guid.NewGuid()
             };
 

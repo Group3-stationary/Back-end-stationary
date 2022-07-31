@@ -9,13 +9,8 @@ namespace StationaryServer2.DTO.User.Request
     public class OrderRequest
     {
         public string EmployeeId { get; set; }
-
-        public IEnumerable<OrderItemRequest> Products { get; set; }
-    }
-
-    public class OrderItemRequest
-    {
-        public int ProductId { get; set; }
-        public int Quantity { get; set; }
+        public string Status { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public List<OrderItemRequest> Products { get; set; }
     }
 }
