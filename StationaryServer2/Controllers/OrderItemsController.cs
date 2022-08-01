@@ -107,7 +107,7 @@ namespace StationaryServer2.Controllers
                     ReceiveId = employee.Superiors,
                     CreatedAt = orderRequest.CreatedAt,
                     Status = "Unseen",
-                    Message = "Employee " + employee.EmployeeName + " has just ordered at " + orderRequest.CreatedAt
+                    Message = "Employee " + employee.EmployeeName + " has just ordered order ID: " + newOrder.OrderId + " at " + orderRequest.CreatedAt
                 };
                 await db_Notification.Insert(notification);
                 //

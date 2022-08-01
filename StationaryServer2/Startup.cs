@@ -58,7 +58,7 @@ namespace StationaryServer2
                                   {
                                       builder.AllowAnyHeader()
             .AllowAnyMethod()
-            .WithOrigins("http://localhost:3000")
+            .SetIsOriginAllowed(origin=>true)
             .AllowCredentials();
                                   });
             });
@@ -145,7 +145,11 @@ namespace StationaryServer2
             app.UseCors(AllowSpecificOrigins);
             //khai bao tren them vao ow duoi
             app.UseAuthentication();
-            app.UseAuthorization();           
+            app.UseAuthorization();
+            if (!Directory.Exists(Path.Combine(env.ContentRootPath, "Images")))
+            {
+                Directory.CreateDirectory(Path.Combine(env.ContentRootPath, "Images"));
+            }
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "Images")),

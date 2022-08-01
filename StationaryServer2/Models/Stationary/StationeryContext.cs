@@ -29,7 +29,7 @@ namespace StationaryServer2.Models.Stationary
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=localhost; Initial Catalog=Stationery; user id=sa; password=1");
+                optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-BNAGLIL\MSSQLSERVERS; Initial Catalog=Stationery;  User Id=sa;Password=123;");
             }
         }
 

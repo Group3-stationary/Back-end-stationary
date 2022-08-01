@@ -5928,11 +5928,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
+      "projectUniqueName": "C:\\Users\\Asus\\Downloads\\Back-end-stationary-develop\\StationaryServer2\\StationaryServer2.csproj",
       "projectName": "StationaryServer2",
-      "projectPath": "D:\\Back_end\\StationaryServer2\\StationaryServer2.csproj",
+      "projectPath": "C:\\Users\\Asus\\Downloads\\Back-end-stationary-develop\\StationaryServer2\\StationaryServer2.csproj",
       "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "D:\\Back_end\\StationaryServer2\\obj\\",
+      "outputPath": "C:\\Users\\Asus\\Downloads\\Back-end-stationary-develop\\StationaryServer2\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
